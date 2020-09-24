@@ -11,7 +11,7 @@ import Signup from "./pages/Signup";
 import OrderHistory from './pages/OrderHistory';
 import Nav from "./components/Nav";
 
-import { StoreProvider, storeProvider } from './utils/GlobalState';
+import { StoreProvider } from './utils/GlobalState';
 
 const client = new ApolloClient({
   request: (operation) => {
