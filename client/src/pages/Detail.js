@@ -10,6 +10,8 @@ import {
 	UPDATE_PRODUCTS,
 } from '../utils/actions';
 
+import { idbPromise } from '../utils/helpers';
+
 import { QUERY_PRODUCTS } from '../utils/queries';
 import spinner from '../assets/spinner.gif';
 
@@ -49,18 +51,35 @@ function Detail() {
 	};
 
 	useEffect(() => {
-		// set current product to matching product in GlobalStore
+		// IF already in global store
 		if (products.length) {
+			// set current product to matching product in GlobalStore
 			setCurrentProduct(products.find((product) => product._id === id));
 
-			// if no products in GlobalStore, update GlobalStore and try again
+						// ELSE IF retrieved from server
 		} else if (data) {
+			// save products to global store
 			dispatch({
 				type: UPDATE_PRODUCTS,
 				products: data.products,
 			});
+			// save products to indexedDB
+			data.products.forEach((product) => {
+				idbPromise('products', 'put', product);
+			});
+
+					// ELSE IF offline (not loading)
+		} else if (!loading) {
+			// get products from indexedDB
+			idbPromise('products', 'get').then((indexedProducts) => {
+				// save products to global store
+				dispatch({
+					type: UPDATE_PRODUCTS,
+					products: indexedProducts,
+				});
+			});
 		}
-	}, [products, data, dispatch, id]);
+	}, [products, data, loading, dispatch, id]);
 
 	return (
 		<>
