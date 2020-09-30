@@ -7,7 +7,7 @@ const categorySlice = createSlice({
 		currentCategory: '',
 	},
 	reducers: {
-		UPDATE_CATEGORY: (state, action) => {
+		UPDATE_CATEGORIES: (state, action) => {
 			state.categories = action.payload.categories;
 		},
 		UPDATE_CURRENT_CATEGORY: (state, action) => {
@@ -16,9 +16,6 @@ const categorySlice = createSlice({
 	},
 });
 
-export const {
-	UPDATE_CATEGORY,
-	UPDATE_CURRENT_CATEGORY,
-} = categorySlice.actions;
+export const { UPDATE_CATEGORIES, UPDATE_CURRENT_CATEGORY } = categorySlice.actions;
 
 export default categorySlice.reducer;
