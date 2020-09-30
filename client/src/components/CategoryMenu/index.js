@@ -1,20 +1,21 @@
 import React, { useEffect } from 'react';
 import { useQuery } from '@apollo/react-hooks';
-import { QUERY_CATEGORIES } from "../../utils/queries";
+import { useSelector, useDispatch } from 'react-redux';
 
-import { useStoreContext } from '../../utils/GlobalState';
+import { QUERY_CATEGORIES } from "../../utils/queries";
 
 import {
 	UPDATE_CATEGORIES,
 	UPDATE_CURRENT_CATEGORY,
-} from '../../utils/actions';
+} from '../../utils/reducers/categorySlice';
 
 import { idbPromise } from '../../utils/helpers';
 
 function CategoryMenu() {
-	const [state, dispatch] = useStoreContext();
+	const category = useSelector((state) => state.category);
+	const { categories } = category;
 
-	const { categories } = state;
+	const dispatch = useDispatch();
 
 	const { loading, data: categoryData } = useQuery(QUERY_CATEGORIES);
 
@@ -22,10 +23,11 @@ function CategoryMenu() {
 		// IF categoryData exists or has changed from the response of useQuery
 		if (categoryData) {
 			// THEN save categories in global store
-			dispatch({
-				type: UPDATE_CATEGORIES,
-				categories: categoryData.categories,
-			});
+			dispatch(
+				UPDATE_CATEGORIES({
+					categories: categoryData.categories,
+				})
+			);
 
 			// AND save to indexedDB
 			categoryData.categories.forEach((category) => {
@@ -37,19 +39,21 @@ function CategoryMenu() {
 			// get category data from indexedDB
 			idbPromise('categories', 'get').then((categories) => {
 				// THEN save it to global store
-				dispatch({
-					type: UPDATE_CATEGORIES,
-					categories: categories,
-				});
+				dispatch(
+					UPDATE_CATEGORIES({
+						categories: categories,
+					})
+				);
 			});
 		}
 	}, [categoryData, loading, dispatch]);
 
 	const handleClick = (id) => {
-		dispatch({
-			type: UPDATE_CURRENT_CATEGORY,
-			currentCategory: id,
-		});
+		dispatch(
+			UPDATE_CURRENT_CATEGORY({
+				currentCategory: id,
+			})
+		);
 	};
 
 	return (
