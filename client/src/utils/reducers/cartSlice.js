@@ -3,30 +3,32 @@ import { createSlice } from '@reduxjs/toolkit';
 const cartSlice = createSlice({
 	name: 'cart',
 	initialState: {
-		cart: [],
+		cartItems: [],
 		cartOpen: false,
 	},
 	reducers: {
 		ADD_TO_CART: (state, action) => {
 			state.cartOpen = true;
-			state.cart.push(action.payload.product);
+			state.cartItems.push(action.payload.product);
 		},
 		ADD_MULTIPLE_TO_CART: (state, action) => {
-			action.payload.products.forEach((item) => {
-				state.cart.push(item);
+			action.payload.cartItems.forEach((item) => {
+				state.cartItems.push(item);
 			});
 		},
 		REMOVE_FROM_CART: (state, action) => {
-			let newState = state.cart.filter((product) => {
+			let newState = state.cartItems.filter((product) => {
 				return product._id !== action.payload._id;
 			});
 
+			console.log(newState);;
+
 			state.cartOpen = newState.length > 0;
-			state.cart = newState;
+			state.cartItems = newState;
 		},
 		UPDATE_CART_QUANTITY: (state, action) => {
 			state.cartOpen = true;
-			state.cart = state.cart.map((product) => {
+			state.cartItems = state.cartItems.map((product) => {
 				if (action.payload._id === product._id) {
 					product.purchaseQuantity = action.payload.purchaseQuantity;
 				}
@@ -35,7 +37,7 @@ const cartSlice = createSlice({
 		},
 		CLEAR_CART: (state) => {
 			state.cartOpen = false;
-			state.cart = [];
+			state.cartItems = [];
 		},
 		TOGGLE_CART: (state) => {
 			state.cartOpen = !state.cartOpen;

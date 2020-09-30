@@ -20,17 +20,15 @@ import Cart from '../components/Cart';
 function Detail() {
 	const { id } = useParams();
 	const dispatch = useDispatch();
-	const cartState = useSelector((state) => state.cart);
-	const productState = useSelector((state) => state.product);
-	const { products } = productState;
-	const { cart } = cartState;
+	const { cartItems } = useSelector((state) => state.cart);
+	const { products } = useSelector((state) => state.product);
 
 	const [currentProduct, setCurrentProduct] = useState({});
 
 	const { loading, data } = useQuery(QUERY_PRODUCTS);
 
 	const addToCart = () => {
-		const itemInCart = cart.find((cartItem) => cartItem._id === id);
+		const itemInCart = cartItems.find((cartItem) => cartItem._id === id);
 
 		if (itemInCart) {
 			dispatch(
@@ -45,10 +43,11 @@ function Detail() {
 				purchaseQuantity: parseInt(itemInCart.purchaseQuantity) + 1,
 			});
 		} else {
-			dispatch({
-				type: ADD_TO_CART,
-				product: { ...currentProduct, purchaseQuantity: 1 },
-			});
+			dispatch(
+				ADD_TO_CART({
+					product: { ...currentProduct, purchaseQuantity: 1 },
+				})
+			);
 
 			idbPromise('cart', 'put', {
 				...currentProduct,
@@ -58,10 +57,11 @@ function Detail() {
 	};
 
 	const removeFromCart = () => {
-		dispatch({
-			type: REMOVE_FROM_CART,
-			_id: currentProduct._id,
-		});
+		dispatch(
+			REMOVE_FROM_CART({
+				_id: currentProduct._id,
+			})
+		);
 
 		idbPromise('cart', 'delete', { ...currentProduct });
 	};
@@ -110,8 +110,14 @@ function Detail() {
 					<p>
 						<strong>Price:</strong>${currentProduct.price}{' '}
 						<button onClick={addToCart}>Add to Cart</button>
-						<button disabled={!cart.find(p => p._id === currentProduct._id)}
-						onClick={removeFromCart}>
+						<button
+							disabled={
+								!cartItems.find(
+									(p) => p._id === currentProduct._id
+								)
+							}
+							onClick={removeFromCart}
+						>
 							Remove from Cart
 						</button>
 					</p>

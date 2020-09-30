@@ -21,17 +21,17 @@ const Cart = () => {
 	const dispatch = useDispatch();
 
 	const cartState = useSelector((state) => state.cart);
-	const { cart, cartOpen } = cartState;
+	const { cartItems, cartOpen } = cartState;
 
 	useEffect(() => {
 		async function getCart() {
 			const idbCart = await idbPromise('cart', 'get');
-			dispatch(ADD_MULTIPLE_TO_CART({ products: [...idbCart] }));
+			dispatch(ADD_MULTIPLE_TO_CART({ cartItems: [...idbCart] }));
 		}
-		if (!cart.length) {
+		if (!cartItems.length) {
 			getCart();
 		}
-	}, [cart.length, dispatch]);
+	}, [cartItems.length, dispatch]);
 
 	useEffect(() => {
 		if (data) {
@@ -47,7 +47,7 @@ const Cart = () => {
 
 	function calculateTotal() {
 		let sum = 0;
-		cart.forEach((item) => {
+		cartItems.forEach((item) => {
 			sum += item.price * item.purchaseQuantity;
 		});
 		return sum.toFixed(2);
@@ -56,7 +56,7 @@ const Cart = () => {
 	function submitCheckout() {
 		const productIds = [];
 
-		cart.forEach((item) => {
+		cartItems.forEach((item) => {
 			for (let i = 0; i < item.purchaseQuantity; i++) {
 				productIds.push(item._id);
 			}
@@ -83,9 +83,9 @@ const Cart = () => {
 				[close]
 			</div>
 			<h2>Shopping Cart</h2>
-			{cart.length ? (
+			{cartItems.length ? (
 				<div>
-					{cart.map((item) => (
+					{cartItems.map((item) => (
 						<CartItem key={item._id} item={item} />
 					))}
 

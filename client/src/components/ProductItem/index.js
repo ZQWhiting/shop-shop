@@ -18,11 +18,11 @@ function ProductItem(item) {
     quantity
   } = item;
   const cartState = useSelector((state) => state.cart);
-  const { cart } = cartState;
+  const { cartItems } = cartState;
   const dispatch = useDispatch()
 
   const addToCart = () => {
-    const itemInCart = cart.find((cartItem) => cartItem._id === _id)
+    const itemInCart = cartItems.find((cartItem) => cartItem._id === _id);
 
     if (itemInCart) {
       dispatch(UPDATE_CART_QUANTITY({
