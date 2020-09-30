@@ -16,12 +16,13 @@ const cartSlice = createSlice({
 				state.cart.push(item);
 			});
 		},
-		REMOVE_FROM_CART: (state) => {
+		REMOVE_FROM_CART: (state, action) => {
 			let newState = state.cart.filter((product) => {
 				return product._id !== action.payload._id;
 			});
 
-			(state.cartOpen = newState.length > 0), (state.cart = newState);
+			state.cartOpen = newState.length > 0;
+			state.cart = newState;
 		},
 		UPDATE_CART_QUANTITY: (state, action) => {
 			state.cartOpen = true;

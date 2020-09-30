@@ -38,7 +38,7 @@ function ProductList() {
       idbPromise('products', 'get').then((products) => {
         // store products in global store
         dispatch(
-			UPDATE_PRODUCTSS({
+			UPDATE_PRODUCTS({
 				products: products,
 			})
 		);
