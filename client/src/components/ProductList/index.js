@@ -22,10 +22,10 @@ function ProductList() {
     if (data) {
       // store data in global store
       dispatch(
-			UPDATE_PRODUCTS({
-				products: data.products,
-			})
-		);
+			  UPDATE_PRODUCTS({
+			  	products: data.products,
+			  })
+		  );
 
       // AND store in indexedDB
       data.products.forEach(product => {
@@ -38,9 +38,9 @@ function ProductList() {
       idbPromise('products', 'get').then((products) => {
         // store products in global store
         dispatch(
-			UPDATE_PRODUCTS({
-				products: products,
-			})
+			    UPDATE_PRODUCTS({
+				  products: products,
+		  	})
 		);
       })
     }

@@ -75,24 +75,26 @@ function Detail() {
 						// ELSE IF retrieved from server
 		} else if (data) {
 			// save products to global store
-			dispatch({
-				type: UPDATE_PRODUCTS,
-				products: data.products,
-			});
+			dispatch(
+				UPDATE_PRODUCTS({
+					products: data.products,
+				})
+			);
 			// save products to indexedDB
 			data.products.forEach((product) => {
 				idbPromise('products', 'put', product);
 			});
 
-					// ELSE IF offline (not loading)
+		// ELSE IF offline (not loading)
 		} else if (!loading) {
 			// get products from indexedDB
 			idbPromise('products', 'get').then((indexedProducts) => {
 				// save products to global store
-				dispatch({
-					type: UPDATE_PRODUCTS,
-					products: indexedProducts,
-				});
+				dispatch(
+					UPDATE_PRODUCTS({
+						products: indexedProducts,
+					})
+				);
 			});
 		}
 	}, [products, data, loading, dispatch, id]);
