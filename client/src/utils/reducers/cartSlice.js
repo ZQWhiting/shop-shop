@@ -7,23 +7,23 @@ const cartSlice = createSlice({
 		cartOpen: false,
 	},
 	reducers: {
-		ADD: (state, action) => {
+		ADD_TO_CART: (state, action) => {
 			state.cartOpen = true;
 			state.cart.push(action.payload.product);
 		},
-		ADD_MULTIPLE: (state, action) => {
+		ADD_MULTIPLE_TO_CART: (state, action) => {
 			action.payload.products.forEach((item) => {
 				state.cart.push(item);
 			});
 		},
-		REMOVE: (state) => {
+		REMOVE_FROM_CART: (state) => {
 			let newState = state.cart.filter((product) => {
 				return product._id !== action.payload._id;
 			});
 
 			(state.cartOpen = newState.length > 0), (state.cart = newState);
 		},
-		UPDATE_QUANTITY: (state, action) => {
+		UPDATE_CART_QUANTITY: (state, action) => {
 			state.cartOpen = true;
 			state.cart = state.cart.map((product) => {
 				if (action.payload._id === product._id) {
@@ -32,23 +32,23 @@ const cartSlice = createSlice({
 				return product;
 			});
 		},
-		CLEAR: (state) => {
+		CLEAR_CART: (state) => {
 			state.cartOpen = false;
 			state.cart = [];
 		},
-		TOGGLE: (state) => {
+		TOGGLE_CART: (state) => {
 			state.cartOpen = !state.cartOpen;
 		},
 	},
 });
 
 export const {
-	ADD,
-	ADD_MULTIPLE,
-	REMOVE,
-	UPDATE_QUANTITY,
-	CLEAR,
-	TOGGLE,
+	ADD_TO_CART,
+	ADD_MULTIPLE_TO_CART,
+	REMOVE_FROM_CART,
+	UPDATE_CART_QUANTITY,
+	CLEAR_CART,
+	TOGGLE_CART,
 } = cartSlice.actions;
 
 export default cartSlice.reducer;

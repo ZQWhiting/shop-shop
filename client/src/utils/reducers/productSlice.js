@@ -6,12 +6,12 @@ const productSlice = createSlice({
 		products: [],
 	},
 	reducers: {
-		UPDATE: (state, action) => {
+		UPDATE_PRODUCT: (state, action) => {
 			state.products = action.payload.products;
 		},
 	},
 });
 
-export const { UPDATE } = productSlice.actions;
+export const { UPDATE_PRODUCT } = productSlice.actions;
 
 export default productSlice.reducer;
