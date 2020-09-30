@@ -26,7 +26,7 @@ const Cart = () => {
 	useEffect(() => {
 		async function getCart() {
 			const idbCart = await idbPromise('cart', 'get');
-			dispatch({ type: ADD_MULTIPLE_TO_CART, products: [...idbCart] });
+			dispatch(ADD_MULTIPLE_TO_CART({ products: [...idbCart] }));
 		}
 		if (!cart.length) {
 			getCart();
@@ -42,7 +42,7 @@ const Cart = () => {
 	}, [data]);
 
 	function toggleCart() {
-		dispatch({ type: TOGGLE_CART });
+		dispatch(TOGGLE_CART());
 	}
 
 	function calculateTotal() {
