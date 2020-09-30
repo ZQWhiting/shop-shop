@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { UPDATE_PRODUCT } from '../../utils/reducers/productSlice';
+import { UPDATE_PRODUCTS } from '../../utils/reducers/productSlice';
 
 import ProductItem from "../ProductItem";
 import { QUERY_PRODUCTS } from "../../utils/queries";
@@ -21,9 +21,11 @@ function ProductList() {
     // if there's data to be stored
     if (data) {
       // store data in global store
-      dispatch(UPDATE_PRODUCT({
-        products: data.products
-      }))
+      dispatch(
+			UPDATE_PRODUCTS({
+				products: data.products,
+			})
+		);
 
       // AND store in indexedDB
       data.products.forEach(product => {
@@ -35,9 +37,11 @@ function ProductList() {
       // get products from indexedDB database
       idbPromise('products', 'get').then((products) => {
         // store products in global store
-        dispatch(UPDATE_PRODUCTS({
-          products: products
-        }))
+        dispatch(
+			UPDATE_PRODUCTSS({
+				products: products,
+			})
+		);
       })
     }
   }, [data, loading, dispatch])
