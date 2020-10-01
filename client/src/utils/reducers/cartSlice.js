@@ -9,7 +9,7 @@ const cartSlice = createSlice({
 	reducers: {
 		ADD_TO_CART: (state, action) => {
 			state.cartOpen = true;
-			state.cartItems.push(action.payload.product);
+			state.cartItems.push(action.payload.cartItems);
 		},
 		ADD_MULTIPLE_TO_CART: (state, action) => {
 			action.payload.cartItems.forEach((item) => {
@@ -20,8 +20,6 @@ const cartSlice = createSlice({
 			let newState = state.cartItems.filter((product) => {
 				return product._id !== action.payload._id;
 			});
-
-			console.log(newState);;
 
 			state.cartOpen = newState.length > 0;
 			state.cartItems = newState;
